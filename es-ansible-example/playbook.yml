@@ -1,0 +1,10 @@
+- hosts: target
+  tasks:
+  - name: Install Vim
+    yum: name=vim
+
+  - name: Simple Example
+    hosts: localhost
+    roles:
+      - role: elastic.elasticsearch
+        es_instance_name: "node1"

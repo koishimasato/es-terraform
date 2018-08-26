@@ -1,0 +1,9 @@
+version: '2'
+services:
+    ansible:
+        build: ansible
+        volumes:
+            - .:/var/data
+
+    target:
+        build: amazonlinux
