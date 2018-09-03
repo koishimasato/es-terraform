@@ -1,0 +1,12 @@
+version: '2'
+services:
+    ansible:
+        build: ansible
+        volumes:
+            - .:/var/data
+        privileged: true
+
+    target:
+        build: amazonlinux
+        privileged: true
+
