@@ -1,0 +1,14 @@
+{
+  "builders" : [{
+    "type" : "amazon-ebs",
+    "region" : "ap-northeast-1",
+    "instance_type" : "t2.nano",
+    "source_ami" : "ami-59bdb937",
+    "ssh_username" : "ec2-user",
+    "ami_name" : "packer-ansible-remote"
+  }],
+  "provisioners" : [{
+    "type" : "ansible",
+    "playbook_file" : "packer.yml"
+  }]
+}
