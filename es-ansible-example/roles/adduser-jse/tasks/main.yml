@@ -1,0 +1,22 @@
+---
+- name: create process group
+  group: name={{ adduser_jse_group.name }} gid={{ adduser_jse_group.gid }}
+
+- name: create process user
+  user:
+    name={{ adduser_jse_user.name }}
+    uid={{ adduser_jse_user.uid }}
+    group={{ adduser_jse_group.name }}
+    groups=wheel shell=/bin/bash state=present append=yes
+
+# - name: copy ssh directory
+#   copy:
+#     src={{ env }}/.ssh/
+#     dest=/home/{{ adduser_jse_user.name }}/.ssh/
+#     owner={{ adduser_jse_user.name }}
+#     group={{ adduser_jse_group.name }}
+#     mode=0600
+
+# - name: copy user sudoers config
+#   copy: src=jse dest=/etc/sudoers.d/jse validate='visudo -cf %s'
+

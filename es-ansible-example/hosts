@@ -2,4 +2,5 @@
 target
 
 [target:vars]
-ansible_user=root
+ansible_user=vagrant
+ansible_host=target
