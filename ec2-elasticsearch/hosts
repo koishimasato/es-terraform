@@ -1,0 +1,8 @@
+[target]
+ec2-elasticsearch-1
+ec2-elasticsearch-2
+ec2-elasticsearch-3
+
+[target:vars]
+ansible_user=ec2-user
+

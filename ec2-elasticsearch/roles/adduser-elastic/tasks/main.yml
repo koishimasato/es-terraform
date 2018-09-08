@@ -1,0 +1,22 @@
+---
+- name: create process group
+  group: name={{ adduser_elastic_group.name }} gid={{ adduser_elastic_group.gid }}
+
+- name: create process user
+  user:
+    name={{ adduser_elastic_user.name }}
+    uid={{ adduser_elastic_user.uid }}
+    group={{ adduser_elastic_group.name }}
+    groups=wheel shell=/bin/bash state=present append=yes
+
+# - name: copy ssh directory
+#   copy:
+#     src={{ env }}/.ssh/
+#     dest=/home/{{ adduser_elastic_user.name }}/.ssh/
+#     owner={{ adduser_elastic_user.name }}
+#     group={{ adduser_elastic_group.name }}
+#     mode=0600
+
+# - name: copy user sudoers config
+#   copy: src=elastic dest=/etc/sudoers.d/elastic validate='visudo -cf %s'
+

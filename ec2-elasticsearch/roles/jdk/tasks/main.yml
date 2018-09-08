@@ -1,0 +1,28 @@
+# jdk
+- name: uninstall java 1.7
+  yum: name='java-1.7.0-openjdk' state=absent
+
+- name: install java
+  yum: name='java-1.8.0-openjdk-devel' state=present
+# ---
+# - name: Download jdk rpm from Oracle Archives
+#   command: curl -LO "{{ jdk_download_url }}" -H "Cookie{{colon}} oraclelicense=accept-securebackup-cookie"
+#   args:
+#     creates: "/var/tmp/{{ jdk_download_url | basename }}"
+#     chdir: /var/tmp
+#
+# - name: Install jdk rpm from a local file
+#   yum: name="/var/tmp/{{ jdk_download_url | basename }}" state=present
+#   register: jdk_installed
+#
+# # TODO: idempotency
+# - name: alternatives link created
+#   alternatives: name=java link=/usr/bin/java path=/usr/java/default/bin/java
+# #  when: jdk_installed|changed
+#
+# - name: Change DNS cache setting
+#   lineinfile: dest=/usr/java/default/jre/lib/security/java.security state=present regexp='networkaddress.cache.ttl' line='networkaddress.cache.ttl=1'
+#
+# - name: Change DNS negative cache setting
+#   lineinfile: dest=/usr/java/default/jre/lib/security/java.security state=present regexp='networkaddress.cache.negative.ttl' line='networkaddress.cache.negative.ttl=0'
+#

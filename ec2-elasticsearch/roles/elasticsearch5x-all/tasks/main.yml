@@ -1,0 +1,48 @@
+---
+- name: donwload elasticsearch rpm
+  get_url: url={{ elasticsearch5_download_url }} dest=/var/tmp/{{ elasticsearch5_download_url | basename }}
+
+- name: Install elasticsearch
+  yum: name=/var/tmp/{{ elasticsearch5_download_url | basename }} state=present
+
+- name: Copy limits.conf
+  copy: src=limits.conf dest=/etc/security/limits.conf owner=root group=root mode=644
+
+- name: Copy elasticsearch config files
+  template: src={{ item }}.j2 dest=/etc/elasticsearch/{{ item }} owner=root group=elasticsearch
+  with_items:
+    - elasticsearch.yml
+    - jvm.options
+    # - log4j2.properties
+
+- debug: var=elasticsearch_configs.node_name
+
+- name: aws | Removing AWS Plugin if it exists
+  shell: bin/elasticsearch-plugin remove discovery-ec2
+    chdir={{ elasticsearch_configs.home_dir }}
+  ignore_errors: yes
+
+- name: aws | Installing AWS Plugin
+  shell: bin/elasticsearch-plugin install discovery-ec2
+    chdir={{ elasticsearch_configs.home_dir }}
+  register: aws_plugins_installed
+  changed_when: "'Installed' in aws_plugins_installed.stdout"
+  failed_when: "aws_plugins_installed.rc != 0 and aws_plugins_installed.stdout.find('already exists. To update the plugin') == -1"
+
+- name: Service elasticsearch start and enabled
+  service: name=elasticsearch state=started enabled=yes
+
+
+
+# Waiting for server boot
+# - wait_for: host={{ elasticsearch_configs.host }} port={{ elasticsearch_configs.http_port }} delay=10
+
+# - name: Copy Index Sttings json
+#   copy: src={{ item }} dest=/var/lib/elasticsearch/{{ item }} owner=elasticsearch group=elasticsearch
+#   with_items:
+#     - index_settings.json
+#
+# - name: Index Settings
+#   command: curl -XPUT 'localhost:9200/_all/_settings?preserve_existing=true' -d @/var/lib/elasticsearch/{{ item }}
+#   with_items:
+#     - index_settings.json

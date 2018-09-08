@@ -1,0 +1,2 @@
+adduser_elastic_group: { name: elastic, gid: 501 }
+adduser_elastic_user: { name: 'elastic', uid: 501 }

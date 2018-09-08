@@ -1,0 +1,12 @@
+- hosts: target
+  become: yes
+  vars:
+    - env: staging
+    - jdk_download_url: http://download.oracle.com/otn-pub/java/jdk/8u72-b15/jdk-8u72-linux-x64.rpm
+    - elasticsearch5_download_url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.5.rpm
+    - es_heap_size: 512m
+  roles:
+    - { role: adduser-elastic }
+    - { role: jdk, tags: jdk }
+    - { role: elasticsearch5x-all, tags: elasticsearch }
+
