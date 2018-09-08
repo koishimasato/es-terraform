@@ -5,7 +5,6 @@ elasticsearch_configs:
   node_name: ${HOSTNAME}
   # for vagrant
   network_host: '_eth1:ipv4_'
-  # host: localhost
   http_port: 9200
   path_data: /var/lib/elasticsearch/
   path_logs: /var/log/elasticsearch/
@@ -17,9 +16,4 @@ elasticsearch_configs:
   discovery_unicast_host: ["192.168.1.41:9300", "192.168.1.42:9300"]
   minimum_master_nodes: 1
   home_dir: /usr/share/elasticsearch
-#  proxy_host: proxyhost
-#  proxy_port: 8080
-  plugins:
-    - { name: 'analysis-kuromoji', location: 'analysis-kuromoji' }
-    - { name: 'head', location: 'mobz/elasticsearch-head' }
 

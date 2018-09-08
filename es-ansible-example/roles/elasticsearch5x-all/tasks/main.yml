@@ -5,8 +5,8 @@
 - name: Install elasticsearch
   yum: name=/var/tmp/{{ elasticsearch5_download_url | basename }} state=present
 
-# - name: Copy limits.conf
-#   copy: src=limits.conf dest=/etc/security/limits.conf owner=root group=root mode=644
+- name: Copy limits.conf
+  copy: src=limits.conf dest=/etc/security/limits.conf owner=root group=root mode=644
 
 - name: Copy elasticsearch config files
   template: src={{ item }}.j2 dest=/etc/elasticsearch/{{ item }} owner=root group=elasticsearch
@@ -20,7 +20,6 @@
 - name: aws | Removing AWS Plugin if it exists
   shell: bin/elasticsearch-plugin remove discovery-ec2
     chdir={{ elasticsearch_configs.home_dir }}
-  when: elasticsearch_plugin_aws_reinstall is defined and elasticsearch_plugin_aws_reinstall == True
   ignore_errors: yes
 
 - name: aws | Installing AWS Plugin
