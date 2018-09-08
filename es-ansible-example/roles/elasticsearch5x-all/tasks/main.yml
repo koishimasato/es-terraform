@@ -17,11 +17,26 @@
 
 - debug: var=elasticsearch_configs.node_name
 
+- name: aws | Removing AWS Plugin if it exists
+  shell: bin/elasticsearch-plugin remove discovery-ec2
+    chdir={{ elasticsearch_configs.home_dir }}
+  when: elasticsearch_plugin_aws_reinstall is defined and elasticsearch_plugin_aws_reinstall == True
+  ignore_errors: yes
+
+- name: aws | Installing AWS Plugin
+  shell: bin/elasticsearch-plugin install discovery-ec2
+    chdir={{ elasticsearch_configs.home_dir }}
+  register: aws_plugins_installed
+  changed_when: "'Installed' in aws_plugins_installed.stdout"
+  failed_when: "aws_plugins_installed.rc != 0 and aws_plugins_installed.stdout.find('already exists. To update the plugin') == -1"
+
 - name: Service elasticsearch start and enabled
   service: name=elasticsearch state=started enabled=yes
 
+
+
 # Waiting for server boot
-- wait_for: host=192.168.1.41 port={{ elasticsearch_configs.http_port }} delay=10
+# - wait_for: host={{ elasticsearch_configs.host }} port={{ elasticsearch_configs.http_port }} delay=10
 
 # - name: Copy Index Sttings json
 #   copy: src={{ item }} dest=/var/lib/elasticsearch/{{ item }} owner=elasticsearch group=elasticsearch

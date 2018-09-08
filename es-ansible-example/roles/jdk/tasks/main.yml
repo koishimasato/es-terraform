@@ -1,6 +1,6 @@
 # jdk
 - name: uninstall java 1.7
-  yum: name='java-1.7.0-openjdk-devel' state=absent
+  yum: name='java-1.7.0-openjdk' state=absent
 
 - name: install java
   yum: name='java-1.8.0-openjdk-devel' state=present

@@ -1,2 +1,0 @@
-adduser_jse_group: { name: jse, gid: 501 }
-adduser_jse_user: { name: 'jse', uid: 501 }
