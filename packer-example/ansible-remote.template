@@ -2,13 +2,14 @@
   "builders" : [{
     "type" : "amazon-ebs",
     "region" : "ap-northeast-1",
-    "instance_type" : "t2.nano",
-    "source_ami" : "ami-59bdb937",
+    "instance_type" : "t2.micro",
+    "source_ami" : "ami-06cd52961ce9f0d85",
     "ssh_username" : "ec2-user",
-    "ami_name" : "packer-ansible-remote"
+    "ami_name" : "packer-ansible-elasticsearch",
+    "ssh_agent_auth": false
   }],
   "provisioners" : [{
     "type" : "ansible",
-    "playbook_file" : "packer.yml"
+    "playbook_file" : "playbook.yml"
   }]
 }
