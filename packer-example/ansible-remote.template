@@ -5,7 +5,7 @@
     "instance_type" : "t2.micro",
     "source_ami" : "ami-06cd52961ce9f0d85",
     "ssh_username" : "ec2-user",
-    "ami_name" : "packer-ansible-elasticsearch",
+    "ami_name" : "packer-ansible-ec2-elasticsearch-{{timestamp}}",
     "ssh_agent_auth": false
   }],
   "provisioners" : [{

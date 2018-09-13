@@ -2,6 +2,7 @@
 ec2-elasticsearch-1
 ec2-elasticsearch-2
 ec2-elasticsearch-3
+packer-es-test
 
 [target:vars]
 ansible_user=ec2-user

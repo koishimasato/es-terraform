@@ -9,4 +9,5 @@
     - { role: adduser-elastic }
     - { role: jdk, tags: jdk }
     - { role: elasticsearch5x-all, tags: elasticsearch }
+    - { role: cron }
 
