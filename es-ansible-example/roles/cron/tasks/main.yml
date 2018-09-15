@@ -36,4 +36,3 @@
     hour: 0
     job: shutdown -h now 2>&1 | logger -t shutdown -p local0.info
 
-
