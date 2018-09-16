@@ -19,21 +19,21 @@
     insertafter: PATH
 
 - name: copy reboot.sh
-  copy: src=reboot.sh dest=/home/elastic/reboot.sh owner=elastic group=elastic mode=744
+  copy: src=reboot.sh dest=/home/{{ user }}/reboot.sh owner={{ user }} group={{ user }} mode=744
 
 - name: cron insert elasticsearch restarting
   cron :
     name: elasticsearch
-    user: vagrant
+    user: "{{ user }}"
     special_time: reboot
-    job: /home/elastic/reboot.sh
+    job: "/home/{{ user }}/reboot.sh"
 
 - name: Create a job for shutdown
   cron :
     name: shutdown
     user: root
     minute: 0
-    hour: 0
+    hour: 15
     job: shutdown -h now 2>&1 | logger -t shutdown -p local0.info
 
 

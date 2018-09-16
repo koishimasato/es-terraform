@@ -8,6 +8,19 @@
 - name: Copy limits.conf
   copy: src=limits.conf dest=/etc/security/limits.conf owner=root group=root mode=644
 
+# for amazon linux 2
+#- name: Create override.conf directory
+#  file:
+#    path: /etc/systemd/system/elasticsearch.service.d
+#    state: directory
+#    mode: 0755
+#
+#- name: Copy override.conf
+#  copy: src=override.conf dest=/etc/systemd/system/elasticsearch.service.d/override.conf owner=root group=root mode=644
+#
+#- name: update elasticsearch service daemon
+#  shell: systemctl daemon-reload
+
 - name: Copy elasticsearch config files
   template: src={{ item }}.j2 dest=/etc/elasticsearch/{{ item }} owner=root group=elasticsearch
   with_items:
