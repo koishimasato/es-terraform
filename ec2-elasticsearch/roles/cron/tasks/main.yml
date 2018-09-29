@@ -19,7 +19,7 @@
     insertafter: PATH
 
 - name: copy reboot.sh
-  copy: src=reboot.sh dest=/home/{{ user }}/reboot.sh owner={{ user }} group={{ user }} mode=744
+  template: src=reboot.sh.j2 dest=/home/{{ user }}/reboot.sh owner={{ user }} group={{ user }} mode=744
 
 - name: cron insert elasticsearch restarting
   cron :
