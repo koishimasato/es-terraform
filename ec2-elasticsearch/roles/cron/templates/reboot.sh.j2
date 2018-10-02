@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sleep 60
+sudo service elasticsearch restart
+date=$(date)
+echo "$date cron: elasticsearch restart"  > /home/{{ user }}/restart.log
