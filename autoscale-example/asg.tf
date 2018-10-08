@@ -1,3 +1,17 @@
+resource "aws_autoscaling_policy" "rails5-sample-asg-cpu-policy" {
+  name                   = "rails5-sample-asg-cpu-policy"
+  adjustment_type        = "PercentChangeInCapacity"
+  policy_type            = "TargetTrackingScaling"
+  autoscaling_group_name = "${aws_autoscaling_group.rails5-sample-autoscale-group.name}"
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 40.0
+  }
+}
+
 resource "aws_autoscaling_group" "rails5-sample-autoscale-group" {
     desired_capacity          = 1
     health_check_grace_period = 60
@@ -16,19 +30,7 @@ resource "aws_autoscaling_group" "rails5-sample-autoscale-group" {
         propagate_at_launch = true
     }
 
-}
+    depends_on = ["aws_launch_configuration.rails5-sample-autoscale-2"]
 
-resource "aws_autoscaling_policy" "rails5-sample-asg-cpu-policy" {
-  name                   = "rails5-sample-asg-cpu-policy"
-  adjustment_type        = "PercentChangeInCapacity"
-  policy_type            = "TargetTrackingScaling"
-  autoscaling_group_name = "${aws_autoscaling_group.rails5-sample-autoscale-group.name}"
-
-  target_tracking_configuration {
-    predefined_metric_specification {
-      predefined_metric_type = "ASGAverageCPUUtilization"
-    }
-    target_value = 40.0
-  }
 }
 
