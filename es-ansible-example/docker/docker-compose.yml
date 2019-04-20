@@ -1,10 +1,10 @@
 version: '2'
 services:
     ansible:
-        build: ansible
+        build: ../ansible
         volumes:
             - .:/var/data
-        privileged: true
+        privileged: true # for use systemctl
 
     target:
         build: amazonlinux
