@@ -1,4 +1,4 @@
-FROM amazonlinux
+FROM amazonlinux:1
 
 RUN yum -y install openssh-server
 
@@ -7,8 +7,8 @@ RUN ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa
 
 RUN sed -ri 's/^#PermitEmptyPasswords no/PermitEmptyPasswords yes/' /etc/ssh/sshd_config
 RUN echo "root:" | chpasswd
-
 EXPOSE 22
 
-CMD ["/usr/sbin/sshd", "-D"]
+#CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/sbin/init"]
 

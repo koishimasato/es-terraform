@@ -4,7 +4,8 @@ elasticsearch_configs:
   cluster_name: test-cluster
   node_name: ${HOSTNAME}
   # for vagrant
-  network_host: '_eth1:ipv4_'
+#  network_host: '_eth1:ipv4_'
+  network_host: 'eth0'
   http_port: 9200
   path_data: /var/lib/elasticsearch/
   path_logs: /var/log/elasticsearch/

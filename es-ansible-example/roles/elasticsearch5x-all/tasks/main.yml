@@ -30,9 +30,11 @@
   failed_when: "aws_plugins_installed.rc != 0 and aws_plugins_installed.stdout.find('already exists. To update the plugin') == -1"
 
 - name: Service elasticsearch start and enabled
-  service: name=elasticsearch state=started enabled=yes
-
-
+  become: yes
+  systemd:
+      state: started
+      name: elasticsearch
+      enabled: yes
 
 # Waiting for server boot
 # - wait_for: host={{ elasticsearch_configs.host }} port={{ elasticsearch_configs.http_port }} delay=10

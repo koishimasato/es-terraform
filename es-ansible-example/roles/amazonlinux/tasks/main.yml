@@ -1,0 +1,9 @@
+---
+- name: install apps
+  yum:
+    name:
+      - hostname
+      - less
+      - curl
+    state: present
+
