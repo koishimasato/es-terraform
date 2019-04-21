@@ -29,12 +29,28 @@
   changed_when: "'Installed' in aws_plugins_installed.stdout"
   failed_when: "aws_plugins_installed.rc != 0 and aws_plugins_installed.stdout.find('already exists. To update the plugin') == -1"
 
-- name: Service elasticsearch start and enabled
+- name: mkdir systemd conf
+  file:
+    path: /etc/systemd/system/elasticsearch.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: systemd memory lock enabled
+  copy: src=override.conf dest=/etc/systemd/system/elasticsearch.service.d/override.conf owner=root group=root mode=644
+
+- name: Service elasticsearch restart and enabled
   become: yes
   systemd:
-      state: started
-      name: elasticsearch
-      enabled: yes
+    daemon-reload: yes
+    state: restarted
+    name: elasticsearch
+    enabled: yes
+
+#- name: sleep for 5 seconds and continue with play
+#  wait_for: timeout=5
+#  delegate_to: localhost
 
 # Waiting for server boot
 # - wait_for: host={{ elasticsearch_configs.host }} port={{ elasticsearch_configs.http_port }} delay=10

@@ -39,6 +39,13 @@ ansible
 /sbin/initとは
 [Docker - docker run で/sbin/init を起動時に与えるコマンドとする設定の意味｜teratail](https://teratail.com/questions/83479#reply-131141)
 
+## 2
+[1] bootstrap checks failed
+[1]: memory locking requested for elasticsearch process but memory is not locked
+
+[Elasticsearch is not starting when bootstrap.memory_lock is set to true - Elasticsearch - Discuss the Elastic Stack](https://discuss.elastic.co/t/elasticsearch-is-not-starting-when-bootstrap-memory-lock-is-set-to-true/120962/10)
+[Configuring system settings | Elasticsearch Reference [5.6] | Elastic](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/setting-system-settings.html#systemd)
+[Disable swapping | Elasticsearch Reference [5.3] | Elastic](https://www.elastic.co/guide/en/elasticsearch/reference/5.3/setup-configuration-memory.html)
 
 
 # ansible:
@@ -52,5 +59,12 @@ cd /var/data
 ansible-playbook -i docker_hosts site.yml
 ```
 
+# unicastでの動的追加
+[How to set up autosearch nodes in Elasticsearch 6.1 - Stack Overflow](https://stackoverflow.com/questions/48147659/how-to-set-up-autosearch-nodes-in-elasticsearch-6-1)
+必ず存在するmaster node 1台をdiscovery.zen.ping.unicast.hostsに追加する
+実運用なら２台は書きたい。
 
+
+[localhost上にDockerでコンテナ化したElasticsearchクラスタを立てて自分用コマンド検索エンジンを作る – PSYENCE:MEDIA](https://tech.recruit-mp.co.jp/infrastructure/docker-elasticsearch/)
+こちらのhostのhostname指定ではうまくいかない
 

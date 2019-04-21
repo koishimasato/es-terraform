@@ -14,7 +14,8 @@ elasticsearch_configs:
   init_params:
     - { regexp: 'export ES_HEAP_SIZE', line: 'export ES_HEAP_SIZE=512m' }
     - { regexp: 'export ES_JAVA_OPTS', line: 'export ES_JAVA_OPTS="-Djava.rmi.server.hostname=192.168.1.41 -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=7085 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"' }
-  discovery_unicast_host: ["192.168.1.41:9300", "192.168.1.42:9300"]
+# for vagrant
+#  discovery_unicast_host: ["192.168.1.41:9300", "192.168.1.42:9300"]
+  discovery_unicast_host: [ "target1" ]
   minimum_master_nodes: 1
   home_dir: /usr/share/elasticsearch
-

@@ -1,4 +1,4 @@
-FROM amazonlinux:1
+FROM amazonlinux
 
 RUN yum -y install openssh-server
 

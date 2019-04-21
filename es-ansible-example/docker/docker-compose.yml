@@ -4,7 +4,11 @@ services:
         build: ansible
         volumes:
             - ..:/var/data
-    target:
+    cerebro:
+        image: yannart/cerebro
+        ports:
+            - "9000:9000"
+    target1:
         build: amazonlinux
         # for systemctl
         privileged: true
@@ -19,6 +23,18 @@ services:
           - /sys/fs/cgroup:/sys/fs/cgroup:ro
         environment:
           - container=docker
-#        stop_signal:
-#          - "SIGRTMIN+3"
-
+    target2:
+        build: amazonlinux
+        # for systemctl
+        privileged: true
+        cap_add:
+          - SYS_ADMIN
+        security_opt:
+          - seccomp:unconfined
+        tmpfs:
+          - /run
+          - /run/lock
+        volumes:
+          - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        environment:
+          - container=docker
