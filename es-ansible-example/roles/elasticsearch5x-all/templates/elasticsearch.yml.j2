@@ -51,7 +51,7 @@ bootstrap.memory_lock: {{ elasticsearch_configs.bootstrap_memory_lock }}
 #
 # Set the bind address to a specific IP (IPv4 or IPv6):
 #
-network.host: {{ elasticsearch_configs.network_host }}
+network.host: 0.0.0.0
 #
 # Set a custom port for HTTP:
 #
@@ -76,7 +76,7 @@ http.port: {{ elasticsearch_configs.http_port }}
 # Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
-# discovery.zen.ping.unicast.hosts: {{ elasticsearch_configs.discovery_unicast_host }}
+discovery.zen.ping.unicast.hosts: {{ elasticsearch_configs.discovery_unicast_host | to_json }}
 #
 # Prevent the "split brain" by configuring the majority of nodes (total number of nodes / 2 + 1):
 #

@@ -1,3 +1,8 @@
+- name: Yum install crontabs
+  yum:
+    name: crontabs
+    state: present
+
 - name: Creates an entry "SHELL"
   cron:
     name: SHELL
@@ -24,7 +29,7 @@
 - name: cron insert elasticsearch restarting
   cron :
     name: elasticsearch
-    user: vagrant
+    user: "{{ ansible_user }}"
     special_time: reboot
     job: /home/elastic/reboot.sh
 
