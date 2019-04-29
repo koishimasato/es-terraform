@@ -1,8 +1,8 @@
-version: '2'
+version: '3'
 services:
-  es5x:
+  es5x-1:
     build: ./build/5x
-    container_name: es5x
+    container_name: es5x-1
     environment:
       - cluster.name=docker-cluster-old
       - bootstrap.memory_lock=true
@@ -12,15 +12,37 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./data/5x:/usr/share/elasticsearch/data
+      - ./data/5x/1:/usr/share/elasticsearch/data
     ports:
-      - 9201:9200
+      - 9200:9200
+      - 9251:9200
     networks:
-      - elasticsearch
+      elasticsearch:
+        ipv4_address: 172.0.5.1
 
-  es6x:
+  es5x-2:
+    build: ./build/5x
+    container_name: es5x-2
+    environment:
+      - cluster.name=docker-cluster-old
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=es5x-1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/5x/2:/usr/share/elasticsearch/data
+    ports:
+      - 9252:9200
+    networks:
+      elasticsearch:
+        ipv4_address: 172.0.5.2
+
+  es6x-1:
     build: ./build/6x
-    container_name: es6x
+    container_name: es6x-1
     environment:
       - cluster.name=docker-cluster-new
       - bootstrap.memory_lock=true
@@ -30,11 +52,43 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./data/6x:/usr/share/elasticsearch/data
+      - ./data/6x/1:/usr/share/elasticsearch/data
     ports:
-      - 9202:9200
+      - 9261:9200
+    networks:
+      elasticsearch:
+        ipv4_address: 172.0.6.1
+
+  es6x-2:
+    build: ./build/6x
+    container_name: es6x-2
+    environment:
+      - cluster.name=docker-cluster-new
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/6x/2:/usr/share/elasticsearch/data
+    ports:
+      - 9262:9200
+    networks:
+      elasticsearch:
+        ipv4_address: 172.0.6.2
+
+  cerebro:
+    image: yannart/cerebro
+    ports:
+        - 9000:9000
     networks:
       - elasticsearch
 
 networks:
   elasticsearch:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: "172.0.0.0/16"
