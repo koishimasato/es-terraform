@@ -1,0 +1,40 @@
+version: '2'
+services:
+  es5x:
+    build: ./build/5x
+    container_name: es5x
+    environment:
+      - cluster.name=docker-cluster-old
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/5x:/usr/share/elasticsearch/data
+    ports:
+      - 9201:9200
+    networks:
+      - elasticsearch
+
+  es6x:
+    build: ./build/6x
+    container_name: es6x
+    environment:
+      - cluster.name=docker-cluster-new
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/6x:/usr/share/elasticsearch/data
+    ports:
+      - 9202:9200
+    networks:
+      - elasticsearch
+
+networks:
+  elasticsearch:
