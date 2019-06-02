@@ -44,9 +44,10 @@ services:
     build: ./build/6x
     container_name: es6x-1
     environment:
-      - cluster.name=docker-cluster-new
+      - cluster.name=docker-cluster-old
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=es5x-1"
     ulimits:
       memlock:
         soft: -1
@@ -63,9 +64,10 @@ services:
     build: ./build/6x
     container_name: es6x-2
     environment:
-      - cluster.name=docker-cluster-new
+      - cluster.name=docker-cluster-old
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=es5x-1"
     ulimits:
       memlock:
         soft: -1
