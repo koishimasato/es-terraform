@@ -85,6 +85,19 @@ services:
     networks:
       - elasticsearch
 
+  nginx:
+    image: nginx:latest
+    volumes:
+        - ${PWD}/nginx/config/:/etc/nginx/conf.d/
+        - ${PWD}/nginx/log/:/var/log/nginx/
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+    ulimits:
+      nproc: 65535
+    ports:
+      - 8080:80
+    networks:
+      - elasticsearch
+
 networks:
   elasticsearch:
     driver: bridge
