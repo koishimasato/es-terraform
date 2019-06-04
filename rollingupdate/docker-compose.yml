@@ -6,7 +6,7 @@ services:
     environment:
       - cluster.name=docker-cluster-old
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
     ulimits:
       memlock:
         soft: -1
@@ -26,7 +26,7 @@ services:
     environment:
       - cluster.name=docker-cluster-old
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
       - "discovery.zen.ping.unicast.hosts=es5x-1"
     ulimits:
       memlock:
@@ -46,7 +46,7 @@ services:
     environment:
       - cluster.name=docker-cluster-old
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
       - "discovery.zen.ping.unicast.hosts=es5x-1"
     ulimits:
       memlock:
@@ -66,7 +66,7 @@ services:
     environment:
       - cluster.name=docker-cluster-old
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
       - "discovery.zen.ping.unicast.hosts=es5x-1"
     ulimits:
       memlock:
