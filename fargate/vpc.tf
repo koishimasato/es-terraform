@@ -10,16 +10,16 @@ resource "aws_subnet" "app_subnet_a" {
   cidr_block = "10.0.1.0/24"
   availability_zone = "${var.region}a"
   tags {
-    Name = "Public Subnet A"
+    Name = "${var.name}-subnet-a"
   }
 }
 
-resource "aws_subnet" "app_subnet_b" {
+resource "aws_subnet" "app_subnet_c" {
   vpc_id = "${aws_vpc.app.id}"
   cidr_block = "10.0.2.0/24"
   availability_zone = "${var.region}c"
   tags {
-    Name = "Public Subnet B"
+    Name = "${var.name}-subnet-c"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_route_table_association" "app_a_table" {
   route_table_id = "${aws_route_table.app.id}"
 }
 
-resource "aws_route_table_association" "app_subnet_b" {
-  subnet_id = "${aws_subnet.app_subnet_b.id}"
+resource "aws_route_table_association" "app_subnet_c" {
+  subnet_id = "${aws_subnet.app_subnet_c.id}"
   route_table_id = "${aws_route_table.app.id}"
 }

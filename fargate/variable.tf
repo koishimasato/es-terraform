@@ -25,4 +25,12 @@ variable "stage" {
   default = "staging"
 }
 
+variable "schedule_expression" {
+  default = "rate(5 minutes)"
+}
+
+variable "private_subnets" {
+  default = ""
+}
+
 
