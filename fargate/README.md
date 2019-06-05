@@ -28,15 +28,10 @@ ecs-cli \
     compose \
         --verbose \
         --file docker-compose.yml \
-        --file docker-compose.production.yml \
         --ecs-params ecs-params.yml \
         --region ap-northeast-1 \
-        --cluster prototype-cluster \
-        --project-name prototype-ali \
-    service up \
-        --target-group-arn targetグループのarn \
-        --container-name nginx \
-        --container-port 80
+        --cluster ls-test-staging \
+     up
 
 ```
         
