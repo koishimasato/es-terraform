@@ -1,0 +1,69 @@
+version: '3'
+services:
+  es6x-1:
+    build: ./build/6x
+    container_name: es6x-1
+    environment:
+      - cluster.name=docker-cluster-old
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
+      - "discovery.zen.ping.unicast.hosts=es6x-1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/6x/1:/usr/share/elasitcsearch/data
+    ports:
+      - 9261:9200
+    networks:
+      performance:
+        ipv4_address: 172.0.6.1
+
+  es6x-2:
+    build: ./build/6x
+    container_name: es6x-2
+    environment:
+      - cluster.name=docker-cluster-old
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
+      - "discovery.zen.ping.unicast.hosts=es6x-1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/6x/2:/usr/share/elasitcsearch/data
+    ports:
+      - 9262:9200
+    networks:
+      performance:
+        ipv4_address: 172.0.6.2
+
+  cerebro:
+    image: yannart/cerebro
+    ports:
+        - 9000:9000
+    networks:
+      - performance
+
+  nginx:
+    image: nginx:latest
+    volumes:
+        - ${PWD}/nginx/config/:/etc/nginx/conf.d/
+        - ${PWD}/nginx/log/:/var/log/nginx/
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+    ulimits:
+      nproc: 65535
+    ports:
+      - 8080:80
+    networks:
+      - performance
+
+networks:
+  performance:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: "172.0.0.0/16"

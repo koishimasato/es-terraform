@@ -1,0 +1,4 @@
+path, body
+test/_search?size=0, {}
+test/_search?size=0, {}
+test/_search?size=0, {}
