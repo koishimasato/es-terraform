@@ -3,8 +3,10 @@ package elasticsearch
 import java.io._
 
 import io.gatling.core.Predef._
-import io.gatling.core.feeder.Feeder
+import io.gatling.core.feeder.{Feeder, SourceFeederBuilder}
+import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
+import io.gatling.http.protocol.HttpProtocolBuilder
 
 import scala.concurrent.duration._
 
@@ -22,20 +24,20 @@ object FileFeeder {
   }
 }
 
-class ElasticsearchPostSimulation extends Simulation {
+class ElasticsearchSimulation extends Simulation {
 
   private val url = "http://localhost:8080"
 
-  val httpConf = http
+  val httpConf: HttpProtocolBuilder = http
     .contentTypeHeader("application/json")
     .baseUrl(url)
     .acceptHeader("application/json")
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
 
 //  val feeder = FileFeeder()
-  val feeder = csv("es-requests.csv").random
+  val feeder: SourceFeederBuilder[String] = csv("es-requests.csv").random
 
-  val scn = scenario("Elastic Search Post")
+  val scn: ScenarioBuilder = scenario("Elastic Search Post")
     .repeat(1601061) {
       feed(feeder)
         .exec {

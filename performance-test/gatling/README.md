@@ -1,40 +1,21 @@
-Gatling's SBT plugin demo
-=========================
-
-A simple project showing how to configure and use Gatling's SBT plugin to run Gatling simulations. 
-
-This project uses SBT 1, which is available [here](https://www.scala-sbt.org/download.html).
-
-Get the project
----------------
+# Run
 
 ```bash
-git clone https://github.com/gatling/gatling-sbt-plugin-demo.git && cd gatling-sbt-plugin-demo
+> gatling:testOnly elasticsearch.ElasticsearchSimulation
 ```
 
-Start SBT
----------
-```bash
-$ sbt
-```
+# 負荷試験をする際の要件
+ref: [fio(1): flexible I/O tester - Linux man page](https://linux.die.net/man/1/fio)
 
-Run all simulations
--------------------
-
-```bash
-> gatling:test
-```
-
-Run a single simulation
------------------------
-
-```bash
-> gatling:testOnly computerdatabase.BasicSimulation
-```
-
-List all tasks
---------------------
-
-```bash
-> tasks gatling -v
-```
+- request valiation
+  - input path (ex: csv file path)
+  - recursive
+  - ramdom distribution (uniform, zipf, pareto)
+- runtime
+- warmuptime
+- iodepth(== number of users)
+- waittime (== thinktime)
+- multiple scenario (group, job file)
+- number of threads
+- number of server
+- output path
