@@ -38,7 +38,7 @@ class ElasticsearchSimulation extends Simulation {
   val feeder: SourceFeederBuilder[String] = csv("es-requests.csv").random
 
   val scn: ScenarioBuilder = scenario("Elastic Search Post")
-    .repeat(1601061) {
+    .repeat(100000) {
       feed(feeder)
         .exec {
           http("request")
@@ -48,12 +48,14 @@ class ElasticsearchSimulation extends Simulation {
         }
     }
 
-  val rps: Int = sys.env.getOrElse("USER_PER_SEC_RATE", "3").toInt
-  val durationSeconds: Int = sys.env.getOrElse("DURATION_MINUTES", "2").toInt
+  val users = 10
+  val rps: Int = sys.env.getOrElse("USER_PER_SEC_RATE", "100").toInt
+  val maxDurationSeconds: Int = sys.env.getOrElse("DURATION_SECONDS", "60").toInt
 
-  setUp(scn.inject(atOnceUsers(rps)).protocols(httpConf))
-    .throttle(jumpToRps(rps), holdFor(durationSeconds.seconds))
-    .maxDuration(durationSeconds.seconds)
+//  setUp(scn.inject(rampUsers(users).during(5.seconds), constantUsersPerSec(users).during(5.seconds)).protocols(httpConf))
+  setUp(scn.inject(rampUsers(users).during(5.seconds)).protocols(httpConf))
+    .throttle(jumpToRps(rps), holdFor(maxDurationSeconds))
+    .maxDuration(maxDurationSeconds.seconds)
 }
 
 
