@@ -19,3 +19,7 @@ ref: [fio(1): flexible I/O tester - Linux man page](https://linux.die.net/man/1/
 - number of threads
 - number of server
 - output path
+
+# nginx access log format:
+[NGINX Docs | Configuring Logging](https://docs.nginx.com/nginx/admin-guide/monitoring/logging/)
+
