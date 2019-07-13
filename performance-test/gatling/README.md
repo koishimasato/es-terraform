@@ -23,3 +23,6 @@ ref: [fio(1): flexible I/O tester - Linux man page](https://linux.die.net/man/1/
 # nginx access log format:
 [NGINX Docs | Configuring Logging](https://docs.nginx.com/nginx/admin-guide/monitoring/logging/)
 
+# gatling sample:
+[gatling/HttpCompileTest.scala at 8c9ff719abb7dec50bddccc7456e4b4e7571fe72 · gatling/gatling](https://github.com/gatling/gatling/blob/8c9ff719abb7dec50bddccc7456e4b4e7571fe72/gatling-http/src/test/scala/io/gatling/http/HttpCompileTest.scala)
+
