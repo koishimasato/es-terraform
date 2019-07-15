@@ -37,25 +37,35 @@ class ElasticsearchSimulation extends Simulation {
 //  val feeder = FileFeeder()
   val feeder: SourceFeederBuilder[String] = csv("es-requests.csv").random
 
+//  val scn: ScenarioBuilder = scenario("Elastic Search Post")
+//    .repeat(100000) {
+//      .feed(feeder)
+//        .exec {
+//          http("request")
+//            .post("""/${path}""")
+//            .body(StringBody("""${body}"""))
+//        }
+//    }
+
   val scn: ScenarioBuilder = scenario("Elastic Search Post")
-    .repeat(100000) {
-      feed(feeder)
-        .exec {
-          http("request")
-            .post("""/${path}""")
-            .body(StringBody("""${body}"""))
-          //          .asJSON
-        }
+    .exec {
+      http("request")
+        .post("""/test/_search""")
+        .body(StringBody("""{}"""))
     }
 
-  val users = 10
-  val rps: Int = sys.env.getOrElse("USER_PER_SEC_RATE", "100").toInt
-  val maxDurationSeconds: Int = sys.env.getOrElse("DURATION_SECONDS", "60").toInt
+  val users = 100
+  val rps: Int = sys.env.getOrElse("USER_PER_SEC_RATE", "10").toInt
+  val maxDurationSeconds: Int = sys.env.getOrElse("DURATION_SECONDS", "15").toInt
 
-//  setUp(scn.inject(rampUsers(users).during(5.seconds), constantUsersPerSec(users).during(5.seconds)).protocols(httpConf))
-  setUp(scn.inject(rampUsers(users).during(5.seconds)).protocols(httpConf))
+  // userは秒ごとに新規投入しつつ、rpsを一定に保つ。
+  setUp(scn.inject(rampUsers(users).during(5.seconds), constantUsersPerSec(users).during(10.seconds)).protocols(httpConf))
     .throttle(jumpToRps(rps), holdFor(maxDurationSeconds))
     .maxDuration(maxDurationSeconds.seconds)
+
+  //  setUp(scn.inject(rampUsers(users).during(5.seconds)).protocols(httpConf))
+//    .throttle(jumpToRps(rps), holdFor(maxDurationSeconds))
+//    .maxDuration(maxDurationSeconds.seconds)
 }
 
 

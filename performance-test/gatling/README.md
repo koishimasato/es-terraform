@@ -26,3 +26,10 @@ ref: [fio(1): flexible I/O tester - Linux man page](https://linux.die.net/man/1/
 # gatling sample:
 [gatling/HttpCompileTest.scala at 8c9ff719abb7dec50bddccc7456e4b4e7571fe72 · gatling/gatling](https://github.com/gatling/gatling/blob/8c9ff719abb7dec50bddccc7456e4b4e7571fe72/gatling-http/src/test/scala/io/gatling/http/HttpCompileTest.scala)
 
+
+# 一定ユーザー数
+```
+setUp(scn.inject(rampUsers(420) over(60 seconds))).protocols(httpConf)
+```
+[How to set max constant number of active users? - Google グループ](https://groups.google.com/forum/#!topic/gatling/L96mIvr59IM)
+
