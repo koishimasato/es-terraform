@@ -1,6 +1,7 @@
 resource "aws_vpc" "app" {
   cidr_block = "10.0.0.0/16"
-  tags {
+
+  tags =  {
     Name = "Prototype VPC"
   }
 }
@@ -9,8 +10,8 @@ resource "aws_subnet" "app_subnet_a" {
   vpc_id = "${aws_vpc.app.id}"
   cidr_block = "10.0.1.0/24"
   availability_zone = "${var.region}a"
-  tags {
-    Name = "${var.name}-subnet-a"
+  tags =  {
+    Name = "${var.task_name}-subnet-a"
   }
 }
 
@@ -18,15 +19,15 @@ resource "aws_subnet" "app_subnet_c" {
   vpc_id = "${aws_vpc.app.id}"
   cidr_block = "10.0.2.0/24"
   availability_zone = "${var.region}c"
-  tags {
-    Name = "${var.name}-subnet-c"
+  tags =  {
+    Name = "${var.task_name}-subnet-c"
   }
 }
 
 resource "aws_internet_gateway" "app" {
   vpc_id = "${aws_vpc.app.id}"
 
-  tags {
+  tags =  {
     Name = "Prototype Internet Gateway"
   }
 }
@@ -39,7 +40,7 @@ resource "aws_route_table" "app" {
     gateway_id = "${aws_internet_gateway.app.id}"
   }
 
-  tags {
+  tags =  {
     Name = "Prototype Route Table"
   }
 }

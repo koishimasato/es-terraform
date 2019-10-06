@@ -18,7 +18,7 @@ variable "region" {
   default = "ap-northeast-1"
 }
 
-variable "name" {
+variable "task_name" {
   default = "ls-test"
 }
 variable "stage" {

@@ -1,11 +1,7 @@
 
 # push image to ECR
 $ terraform apply
-$ aws ecr get-login --region ap-northeast-1 --profile terraform | pbcopy
-
--e noneを消す
-
-$ pbpaste
+$ $(aws ecr get-login --no-include-email --region ap-northeast-1)
 
 example:
 $ docker build -t [image] .

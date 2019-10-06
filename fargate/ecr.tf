@@ -1,3 +1,3 @@
 resource "aws_ecr_repository" "app" {
-  name = "${var.name}"
+  name = "${var.task_name}"
 }

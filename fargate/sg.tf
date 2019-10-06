@@ -2,13 +2,13 @@ resource "aws_security_group" "fargate_sg" {
   name = "fargate-task-sg"
   vpc_id = "${aws_vpc.app.id}"
 
-//  ingress = {
-//    from_port = 80
-//    to_port = 80
-//    protocol = "tcp"
-//    cidr_blocks = [
-//      "0.0.0.0/0"]
-//  }
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = [
+      "0.0.0.0/0"]
+  }
 
   egress {
     from_port = 0
@@ -18,7 +18,7 @@ resource "aws_security_group" "fargate_sg" {
       "0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "fargate-task-sg"
   }
 }
