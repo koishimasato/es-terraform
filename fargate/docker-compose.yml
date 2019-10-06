@@ -1,0 +1,11 @@
+version: '3'
+services:
+  app:
+    image: 772010606571.dkr.ecr.ap-northeast-1.amazonaws.com/ls-test:latest
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /ecs/fargate/task
+        awslogs-region: ap-northeast-1
+        awslogs-stream-prefix: fargate
+
