@@ -1,0 +1,23 @@
+version: '3'
+services:
+  es6x:
+    build: ./build/6x
+#    container_name: es6x
+    environment:
+      - cluster.name=docker-cluster-old
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/6x/1:/usr/share/elasitcsearch/data
+    ports:
+      - 9200:9200
+
+  helper:
+    build: ./build/helper
+    volumes:
+      - ./:/workspace
+    command: 'sh es-mapping.sh'
