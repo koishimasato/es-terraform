@@ -1,0 +1,61 @@
+version: '3'
+services:
+  es5x-1:
+    build: ./build/5x
+    container_name: es5x-1
+    environment:
+      - cluster.name=hands-on
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es_data1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9251:9200
+    networks:
+      elasticsearch:
+        ipv4_address: 172.0.5.1
+
+  es5x-2:
+    build: ./build/5x
+    container_name: es5x-2
+    environment:
+      - cluster.name=hands-on
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
+      - "discovery.zen.ping.unicast.hosts=es5x-1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es_data2:/usr/share/elasticsearch/data
+    ports:
+      - 9252:9200
+    networks:
+      elasticsearch:
+        ipv4_address: 172.0.5.2
+
+  cerebro:
+    image: yannart/cerebro
+    ports:
+        - 9000:9000
+    networks:
+      - elasticsearch
+
+networks:
+  elasticsearch:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: "172.0.0.0/16"
+
+volumes:
+  es_data1:
+  es_data2:
+
