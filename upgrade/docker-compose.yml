@@ -20,69 +20,69 @@ services:
       elasticsearch:
         ipv4_address: 172.0.5.1
 
-  es5x-2:
-    build: ./build/5x
-    container_name: es5x-2
+  # es5x-2:
+  #   build: ./build/5x
+  #   container_name: es5x-2
+  #   environment:
+  #     - cluster.name=docker-cluster-old
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
+  #     - "discovery.zen.ping.unicast.hosts=es5x-1"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - es_data2:/usr/share/elasticsearch/data
+  #   ports:
+  #     - 9252:9200
+  #   networks:
+  #     elasticsearch:
+  #       ipv4_address: 172.0.5.2
+
+  es7x-1:
+    build: ./build/7x
+    container_name: es7x-1
     environment:
-      - cluster.name=docker-cluster-old
+      - cluster.name=docker-cluster-new
       - bootstrap.memory_lock=true
+      - node.name=es7x-1
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
-      - "discovery.zen.ping.unicast.hosts=es5x-1"
+      - discovery.seed_hosts=es7x-1
+      - cluster.initial_master_nodes=es7x-1
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
-      - es_data2:/usr/share/elasticsearch/data
+     - es_data71:/usr/share/elasticsearch/data
     ports:
-      - 9252:9200
+      - 9271:9200
     networks:
       elasticsearch:
-        ipv4_address: 172.0.5.2
+        ipv4_address: 172.0.7.1
 
-   es7x-1:
-     build: ./build/7x
-     container_name: es7x-1
-     environment:
-       - cluster.name=docker-cluster-new
-       - bootstrap.memory_lock=true
-       - node.name=es7x-1
-       - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
-       - discovery.seed_hosts=es7x-1
-       - cluster.initial_master_nodes=es7x-1
-     ulimits:
-       memlock:
-         soft: -1
-         hard: -1
-     volumes:
-       - ./data/7x/1:/usr/share/elasticsearch/data
-     ports:
-       - 9271:9200
-     networks:
-       elasticsearch:
-         ipv4_address: 172.0.7.1
-
-   es7x-2:
-     build: ./build/7x
-     container_name: es7x-2
-     environment:
-       - cluster.name=docker-cluster-new
-       - bootstrap.memory_lock=true
-       - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
-       - discovery.seed_hosts=es7x-1
-       - cluster.initial_master_nodes=es7x-1
-     ulimits:
-       memlock:
-         soft: -1
-         hard: -1
-     volumes:
-       - ./data/7x/2:/usr/share/elasticsearch/data
-     ports:
-       - 9272:9200
-     networks:
-       elasticsearch:
-         ipv4_address: 172.0.7.2
-
+   # es7x-2:
+   #   build: ./build/7x
+   #   container_name: es7x-2
+   #   environment:
+   #     - cluster.name=docker-cluster-new
+   #     - bootstrap.memory_lock=true
+   #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.allow_insecure_settings=true"
+   #     - discovery.seed_hosts=es7x-1
+   #     - cluster.initial_master_nodes=es7x-1
+   #   ulimits:
+   #     memlock:
+   #       soft: -1
+   #       hard: -1
+   #   volumes:
+   #        - es_data72:/usr/share/elasticsearch/data
+   #   ports:
+   #     - 9272:9200
+   #   networks:
+   #     elasticsearch:
+   #       ipv4_address: 172.0.7.2
+   #
   cerebro:
     image: yannart/cerebro
     ports:
@@ -90,18 +90,18 @@ services:
     networks:
       - elasticsearch
 
-   nginx:
-     image: nginx:1.16-alpine
-     volumes:
-         - ${PWD}/nginx/config/:/etc/nginx/conf.d/
-         - ${PWD}/nginx/log/:/var/log/nginx/
-     # command: /bin/bash -c "nginx -g 'daemon off;'"
-     ulimits:
-       nproc: 65535
-     ports:
-       - 8080:80
-     networks:
-       - elasticsearch
+  # nginx:
+  #   image: nginx:1.16-alpine
+  #   volumes:
+  #       - ${PWD}/nginx/config/:/etc/nginx/conf.d/
+  #       - ${PWD}/nginx/log/:/var/log/nginx/
+  #   # command: /bin/bash -c "nginx -g 'daemon off;'"
+  #   ulimits:
+  #     nproc: 65535
+  #   ports:
+  #     - 8080:80
+  #   networks:
+  #     - elasticsearch
 
 networks:
   elasticsearch:
@@ -114,4 +114,5 @@ networks:
 volumes:
   es_data1:
   es_data2:
-
+  es_data71:
+  es_data72:
