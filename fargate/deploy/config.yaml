@@ -1,0 +1,5 @@
+region: ap-northeast-1
+cluster: ls-test-staging
+service: ls-test-staging
+task_definition: task-definition.json
+timeout: 10m0s

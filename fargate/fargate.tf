@@ -2,6 +2,39 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   name = "${var.task_name}-${var.stage}"
 }
 
+resource "aws_ecs_service" "app_ecs_frontend_service" {
+  name = "${var.task_name}-${var.stage}"
+  cluster = "${aws_ecs_cluster.ecs_cluster.id}"
+  task_definition = "${aws_ecs_task_definition.app.arn}"
+  desired_count = 1
+  launch_type = "FARGATE"
+  deployment_minimum_healthy_percent = 100
+  deployment_maximum_percent = 200
+  health_check_grace_period_seconds = 100
+
+  network_configuration {
+    subnets = [
+      "${aws_subnet.app_subnet_a.id}",
+      "${aws_subnet.app_subnet_c.id}"]
+    security_groups = [
+      "${aws_security_group.fargate_sg.id}"
+    ]
+    assign_public_ip = false
+  }
+
+//  load_balancer {
+//    target_group_arn = "${aws_lb_target_group.app_target_group.arn}"
+//    container_name = "frontend"
+//    container_port = 80
+//  }
+}
+
+resource "aws_cloudwatch_log_group" "app_log" {
+  name = "/ecs/fargate/task"
+  retention_in_days = 14
+}
+
+
 variable "log_group" {
   default = "/ecs/fargat/task"
 }
