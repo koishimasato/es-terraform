@@ -1,0 +1,221 @@
+### ping
+GET http://localhost:9200/
+
+###
+# response
+
+HTTP/1.1 200 OK
+content-type: application/json; charset=UTF-8
+content-encoding: gzip
+content-length: 239
+
+{
+  "name": "tzA1jOu",
+  "cluster_name": "hands-on",
+  "cluster_uuid": "0csnH81RTQ68P3kXsvz9Gw",
+  "version": {
+    "number": "5.6.7",
+    "build_hash": "4669214",
+    "build_date": "2018-01-25T21:14:50.776Z",
+    "build_snapshot": false,
+    "lucene_version": "6.6.1"
+  },
+  "tagline": "You Know, for Search"
+}
+```
+
+### create document
+# http://host:port/index/type/n
+
+POST http://localhost:9200/repo/job/1
+Content-Type: application/json
+
+{
+    "title": "scalaエンジニア",
+    "content": "scalaエンジニア募集"
+}
+
+# Q. 1を抜くとどうなるのか確認してみましょう
+
+### get document
+
+GET http://localhost:9200/repo/job/1
+Content-Type: application/json
+
+
+### search document
+
+GET http://localhost:9200/repo/_search
+Content-Type: application/json
+
+### search with query
+
+GET http://localhost:9200/repo/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "title": "scala"
+    }
+  }
+}
+
+# Q match以外のクエリを使ってみましょう
+
+### update all fields
+
+PUT http://localhost:9200/repo/job/1/
+Content-Type: application/json
+
+{
+    "title": "rubyエンジニア",
+    "content": "rubyエンジニア募集"
+}
+
+### update a part of fields
+
+POST http://localhost:9200/repo/job/1/_update
+Content-Type: application/json
+
+{
+    "doc": {
+        "content": "rubyエンジニア募集中"
+    }
+}
+
+# Q. update all fieldsとの違いはなにか？
+
+### update by query
+# やや上級者向け。
+# 1. searchのquery句で条件指定
+# 2. スクリプト言語を使って値更新を行う
+
+POST http://localhost:9200/repo/job/_update_by_query
+Content-Type: application/json
+
+{
+    "query": {
+        "match": {
+            "title": "エンジニア"
+        }
+    },
+    "script" :{
+        "source": "ctx._source.content = 'ruby python go';"
+    }
+}
+
+
+### delete
+
+DELETE http://localhost:9200/repo/job/1
+Content-Type: application/json
+
+### delete by query
+# 実は、クエリを投げる系はupdateでもdeleteでもPOSTを使います
+
+POST http://localhost:9200/repo/_delete_by_query
+Content-Type: application/json
+
+{
+    "query": {
+        "match": {
+            "title": "ruby"
+        }
+    }
+}
+
+### delete index
+DELETE http://localhost:9200/repo
+
+### create repo index with settings adn mappings
+# settings: シャード数やアナライザーの設定
+# mappings: スキーマ定義のようなもの
+
+PUT http://localhost:9200/repo
+Content-Type: application/json
+
+{
+  "settings": {
+    "index": {
+      "analysis": {
+        "tokenizer": {
+          "kuromoji_user_dict": {
+            "type": "kuromoji_tokenizer",
+            "mode": "search",
+            "discard_punctuation": "false"
+          }
+        },
+        "analyzer": {
+          "my_analyzer": {
+            "type": "custom",
+            "tokenizer": "kuromoji_user_dict",
+            "filter": ["cjk_width"]
+          },
+          "bigram_analyzer": {
+          }
+        }
+
+    }
+  },
+  "mappings": {
+    "job": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "my_analyzer"
+        },
+        "content": {
+          "type": "text",
+          "analyzer": "my_analyzer"
+        }
+      }
+    }
+  }
+}
+
+# → kuromoji_tokenizerは形態素解析で文章分割を行う
+# cjk_widthは半角カタカナを全角へ
+
+
+### es 7 mapping error pattern
+
+PUT http://localhost:9271/repo
+Content-Type: application/json
+
+{
+  "mappings": {
+    "job": {
+      "properties": {
+        "title": {
+          "type": "text"
+        },
+        "content": {
+          "type": "text"
+        }
+      }
+    }
+  }
+}
+
+### es 7 mapping pattern
+
+PUT http://localhost:9271/repo
+Content-Type: application/json
+
+{
+  "mappings": {
+    "properties": {
+      "title": {
+          "type": "text"
+      },
+      "content": {
+          "type": "text"
+      }
+    }
+  }
+}
+
+### delete 7 index
+DELETE http://localhost:9271/repo
+Content-Type: application/json
